@@ -4,6 +4,26 @@ local parsers = require("nvim-treesitter.parsers")
 local M = {}
 local H = {}
 
+-- Helper function to get parser (supports both old and new API)
+H.get_parser = function()
+  -- Try new API first (Neovim 0.9+)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local ft = vim.bo[bufnr].filetype
+  local lang = vim.treesitter.language.get_lang(ft) or ft
+  
+  local ok, parser = pcall(vim.treesitter.get_parser, bufnr, lang)
+  if ok and parser then
+    return parser
+  end
+  
+  -- Fallback to old API if available
+  if parsers.get_parser then
+    return parsers.get_parser()
+  end
+  
+  error("Could not get treesitter parser")
+end
+
 M.get_class_name = function()
   local class_name = [[
     (class_declaration
@@ -11,7 +31,7 @@ M.get_class_name = function()
     )
   ]]
   local class_name_query = H.build_query(class_name)
-  local root = parsers.get_parser():parse()[1]:root()
+  local root = H.get_parser():parse()[1]:root()
 
   local result = H.get_matched_node_names(class_name_query, 1, root)
   if not next(result) then
@@ -30,7 +50,7 @@ M.get_test_class_name = function()
     )
   ]]
   local test_class_name_query = H.build_query(test_class_name)
-  local root = parsers.get_parser():parse()[1]:root()
+  local root = H.get_parser():parse()[1]:root()
 
   local result = H.get_matched_node_names(test_class_name_query, 2, root)
   if vim.tbl_isempty(result) then
@@ -49,7 +69,7 @@ M.get_test_method_names_in_curr_file = function()
     )
   ]]
   local apex_test_meth_query = H.build_query(test_annotation)
-  local root = parsers.get_parser():parse()[1]:root()
+  local root = H.get_parser():parse()[1]:root()
 
   return H.get_matched_node_names(apex_test_meth_query, 2, root)
 end
@@ -81,7 +101,7 @@ end
 -- Helper ------------------------------
 
 H.build_query = function(query_str)
-  local parser = parsers.get_parser()
+  local parser = H.get_parser()
   local lang = parser:lang()
   return ts.query.parse(lang, query_str)
 end
