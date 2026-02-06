@@ -78,6 +78,28 @@ local default_cfg = {
   -- wait time for sf commands (in minutes)
   -- running all local tests still defaults to 180 mins, as it is a costly operation
   sf_wait_time = 5,
+
+  -- Key mappings for test selector and results panel
+  -- Set to false to disable default mappings entirely
+  -- Each key can be a string (single key) or a table of keys
+  test_keys = {
+    -- Test selector keys (when using open_test_select)
+    selector = {
+      toggle = "x",           -- Toggle test selection
+      select_all = "a",       -- Select/deselect all tests
+      invert_selection = "i", -- Invert current selection
+      run = "cc",            -- Run selected tests
+      run_with_coverage = "CC", -- Run selected tests with coverage
+    },
+    -- Test results panel keys (when using show_test_results)
+    results = {
+      close = "q",           -- Close results panel
+      jump_to_error = "<CR>", -- Jump to error location
+      rerun_test = "r",      -- Rerun test under cursor
+      rerun_failed = "R",    -- Rerun all failed tests
+      show_log = "l",        -- Show test log
+    },
+  },
 }
 
 local apply_config = function(opt)

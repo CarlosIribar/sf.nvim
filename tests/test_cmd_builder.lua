@@ -138,6 +138,13 @@ T["setup()"]["throws when no default_org nor set_org() called"] = function()
   end)
 end
 
+T["setup()"]["throws when target_org is empty string"] = function()
+  child.lua('U.target_org = ""')
+  expect.error(function()
+    child.lua([[B:new():cmd("apex"):act("run"):build()]])
+  end)
+end
+
 T["setup()"]['when no "org" property then use the default targe"t_org"'] = function()
   local result = child.lua_get('B:new():cmd("apex"):act("run"):build()')
   local expected = 'sf apex run -o "t_org"'

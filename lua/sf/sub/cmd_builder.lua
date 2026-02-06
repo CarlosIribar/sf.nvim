@@ -22,7 +22,7 @@ function CommandBuilder:new(base_command)
     subactions = {},
     params = {},
     param_str = "",
-    org = U.target_org or nil,
+    org = (U.target_org and U.target_org ~= "") and U.target_org or nil,
     require_org = true,
   }, CommandBuilder)
   return obj

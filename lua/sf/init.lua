@@ -217,6 +217,21 @@ Sf.uncovered_jump_forward = Test.uncovered_jump_forward
 --- When code coverage sign icon is enabled on the current buffer, the cursor jumps to the previous uncovered line
 Sf.uncovered_jump_backward = Test.uncovered_jump_backward
 
+--- Re-run only the failed tests from the last test execution.
+--- Reads cached test_result.json and builds a command targeting only failed tests.
+Sf.rerun_failed_tests = Test.rerun_failed_tests
+
+--- Open a structured results panel showing PASS/FAIL status, timing, and errors
+--- for the last test execution. Supports navigation to error locations.
+Sf.show_test_results = Test.show_results
+
+--- Download and open the debug log associated with the last test execution.
+Sf.show_test_log = Test.show_test_log
+
+--- Populate the quickfix list with failed test errors and their source locations.
+--- Enables :cnext/:cprev navigation through test failures.
+Sf.test_quickfix = Test.populate_quickfix
+
 -- From Ctags module ==========================================================
 
 --- Create tags file in the root path by using universal ctags cli tool.
